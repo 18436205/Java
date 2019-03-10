@@ -37,7 +37,7 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
  JButton black;
  JScrollPane blackScrollpane;
  JPanel blackPanel;
- static final int BLACKCOUNT=11;
+ static final int BLACKCOUNT=51;
  JLabel[] blackLabel=new JLabel[BLACKCOUNT];
  
  

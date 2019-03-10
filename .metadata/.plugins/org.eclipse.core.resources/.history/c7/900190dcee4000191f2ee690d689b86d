@@ -28,19 +28,6 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
  JButton myFriendButton1;
  JButton myStrangerButton1;
  JButton BlackListButton1;
- 
- //第三张卡片组件
- JPanel blacklistpanel;
- JPanel fsblist;
- JButton friend;
- JButton stranger;
- JButton black;
- JScrollPane blackScrollpane;
- JPanel blackPanel;
- static final int BLACKCOUNT=11;
- JLabel[] blackLabel=new JLabel[BLACKCOUNT];
- 
- 
  //卡片布局
  CardLayout cardLayout;
  
@@ -57,7 +44,6 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
   
   myStrangerBlacklistPanel.add(myStrangerButton);
   BlackListButton=new JButton("不想认识的沙雕网友");
-  BlackListButton.addActionListener(this);
   myStrangerBlacklistPanel.add(BlackListButton);
   myFriendPanel.add(myStrangerBlacklistPanel,"South");
   
@@ -84,7 +70,6 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
   StrangerPanel.add(myFriendStrangerPanel,"North");
   
   BlackListButton1=new JButton("不想认识的沙雕网友");
-  BlackListButton1.addActionListener(this);
   StrangerPanel.add(BlackListButton1,"South");
   
   
@@ -98,33 +83,10 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
   myStrangerScrollpane1=new JScrollPane(myStrangerListPanel);
   StrangerPanel.add(myStrangerScrollpane1);
   
-  //第三张卡片
-  blacklistpanel=new JPanel(new BorderLayout());
-  fsblist=new JPanel(new GridLayout(3,1));
-  friend=new JButton ("我的沙雕网友");
-  friend.addActionListener(this);
-  stranger=new JButton("不认识的沙雕网友");
-  stranger.addActionListener(this);
-  black=new JButton("不想认识的沙雕网友");
-  fsblist.add(friend);
-  fsblist.add(stranger);
-  fsblist.add(black);
-  blacklistpanel.add(fsblist,"North");
-  blackPanel=new JPanel(new GridLayout(BLACKCOUNT-1,1));
-  for(int i=1;i<BLACKCOUNT;i++)
-  {
-	  blackLabel[i]=new JLabel(i+"",new ImageIcon("images/fuhua.gif"),JLabel.LEFT);
-      blackLabel[i].addMouseListener(this);
-      blackPanel.add(blackLabel[i]);
-  }
-  blackScrollpane=new JScrollPane(blackPanel);
-  blacklistpanel.add(blackScrollpane);
-  
   cardLayout=new CardLayout();
   this.setLayout(cardLayout);
   this.add(myFriendPanel,"1");
   this.add(StrangerPanel,"2");
-  this.add(blacklistpanel,"3");
   this.setSize(200,500);
   this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   this.setVisible(true);
@@ -140,18 +102,6 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
   if (arg0.getSource()==myFriendButton1){
    cardLayout.show(this.getContentPane(),"1");
   }
-  if (arg0.getSource()==BlackListButton){
-	   cardLayout.show(this.getContentPane(),"3");
-	  }
-  if (arg0.getSource()==BlackListButton1){
-	   cardLayout.show(this.getContentPane(),"3");
-	  }
-  if (arg0.getSource()==friend){
-	   cardLayout.show(this.getContentPane(),"1");
-	  }
-  if (arg0.getSource()==stranger){
-	   cardLayout.show(this.getContentPane(),"2");
-	  }
  }
  @Override
  public void mouseClicked(MouseEvent e) {

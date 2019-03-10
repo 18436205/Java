@@ -37,7 +37,7 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
  JButton black;
  JScrollPane blackScrollpane;
  JPanel blackPanel;
- static final int BLACKCOUNT=11;
+ static final int BLACKCOUNT=51;
  JLabel[] blackLabel=new JLabel[BLACKCOUNT];
  
  
@@ -98,7 +98,16 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
   myStrangerScrollpane1=new JScrollPane(myStrangerListPanel);
   StrangerPanel.add(myStrangerScrollpane1);
   
+  
   //第三张卡片
+  /*JPanel blacklistpanel;
+ JButton friend;
+ JButton stranger;
+ JButton black;
+ JScrollPane blackScrollpane;
+ JPanel blackPanel;
+ static final int BLACKCOUNT=51;
+ JLabel[] blackLabel=new JLabel[BLACKCOUNT];*/
   blacklistpanel=new JPanel(new BorderLayout());
   fsblist=new JPanel(new GridLayout(3,1));
   friend=new JButton ("我的沙雕网友");
@@ -110,15 +119,9 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
   fsblist.add(stranger);
   fsblist.add(black);
   blacklistpanel.add(fsblist,"North");
-  blackPanel=new JPanel(new GridLayout(BLACKCOUNT-1,1));
-  for(int i=1;i<BLACKCOUNT;i++)
-  {
-	  blackLabel[i]=new JLabel(i+"",new ImageIcon("images/fuhua.gif"),JLabel.LEFT);
-      blackLabel[i].addMouseListener(this);
-      blackPanel.add(blackLabel[i]);
-  }
-  blackScrollpane=new JScrollPane(blackPanel);
-  blacklistpanel.add(blackScrollpane);
+  
+  blackScrollpane=new JScrollPane(fsblist);
+  
   
   cardLayout=new CardLayout();
   this.setLayout(cardLayout);
@@ -149,7 +152,7 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
   if (arg0.getSource()==friend){
 	   cardLayout.show(this.getContentPane(),"1");
 	  }
-  if (arg0.getSource()==stranger){
+  if (arg0.getSource()==black){
 	   cardLayout.show(this.getContentPane(),"2");
 	  }
  }

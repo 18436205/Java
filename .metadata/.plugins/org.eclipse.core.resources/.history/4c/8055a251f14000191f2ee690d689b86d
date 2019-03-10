@@ -37,7 +37,7 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
  JButton black;
  JScrollPane blackScrollpane;
  JPanel blackPanel;
- static final int BLACKCOUNT=11;
+ static final int BLACKCOUNT=51;
  JLabel[] blackLabel=new JLabel[BLACKCOUNT];
  
  
@@ -117,8 +117,8 @@ public class friendlist extends JFrame implements ActionListener,MouseListener{
       blackLabel[i].addMouseListener(this);
       blackPanel.add(blackLabel[i]);
   }
-  blackScrollpane=new JScrollPane(blackPanel);
-  blacklistpanel.add(blackScrollpane);
+  blackScrollpane=new JScrollPane(fsblist);
+  blacklistpanel.add(blackPanel);
   
   cardLayout=new CardLayout();
   this.setLayout(cardLayout);
