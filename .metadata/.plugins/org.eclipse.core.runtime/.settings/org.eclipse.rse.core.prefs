@@ -1,4 +1,4 @@
-activeuserprofiles=DESKTOP-LIJCU25;Team
+activeuserprofiles=Team;zy107;zy91
 eclipse.preferences.version=1
-org.eclipse.rse.systemtype.local.systemType.defaultUserId=\u4E0D\u671F\u800C\u9047
-useridperkey=DESKTOP-LIJCU25.Local\=\u4E0D\u671F\u800C\u9047;
+org.eclipse.rse.systemtype.local.systemType.defaultUserId=Administrator
+useridperkey=zy107.Local\=Administrator;
