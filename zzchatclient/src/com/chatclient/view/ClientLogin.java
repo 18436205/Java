@@ -6,7 +6,7 @@ import javax.swing.*;
 
 import com.zzchat.model.Message;
 import com.zzchat.model.User;
-import com.zzchatclient.control.ClientConnet;
+import com.zzchatclient.control.ClientConnect;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -112,7 +112,7 @@ public class ClientLogin extends JFrame implements ActionListener{
 			user.setUserName(userName);
 			user.setPassWord(password);
 			
-			Message mess=new ClientConnet().loginValidate(user);
+			Message mess=new ClientConnect().loginValidate(user);
 			if(mess.getMessageType().equals("Message.message_LoginSuccess")){
 			new FriendList(userName);
 			this.dispose();
