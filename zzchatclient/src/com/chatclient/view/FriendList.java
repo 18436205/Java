@@ -5,10 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.Socket;
+import java.util.HashMap;
 
 import javax.swing.*;
 
 public class FriendList extends JFrame implements ActionListener,MouseListener{//顶层容器
+	
+	public static HashMap hmFriendChat1=new HashMap<String,FriendChat1>();//键值对
 	CardLayout cardLayout;//卡片布局
 	
 	JPanel myFriendPanel;
@@ -175,7 +179,9 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 			JLabel jlbl=(JLabel)arg0.getSource();
 			String receiver =jlbl.getText();
 			//new FriendChatClient(this.userName,receiver);
-			new Thread(new FriendChat(this.userName,receiver)).start();
+			//new Thread(new FriendChat(this.userName,receiver)).start();
+			FriendChat1 friendChat1=new FriendChat1(this.userName,receiver);//friendChat是一个变量
+			hmFriendChat1.put(userName+"to"+receiver,friendChat1);//保存对象到HashMap中
 		}
 		
 		
