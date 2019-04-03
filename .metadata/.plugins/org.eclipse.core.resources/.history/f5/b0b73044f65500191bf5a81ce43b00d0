@@ -21,7 +21,7 @@ public class ClientReceiverThread extends Thread{
 			try{
 				ois=new ObjectInputStream(s.getInputStream());
 				Message mess=(Message)ois.readObject();//接受聊天信息
-				String showMessage=mess.getSender()+"对"+mess.getReceiver()+"说:\r\n                                                        "+mess.getContent();
+				String showMessage=mess.getSender()+"对"+mess.getReceiver()+"说:\r\n                                                   "+mess.getContent();
 				System.out.println(showMessage);
 				//jta.append(showMessage+"\r\n");
 				
