@@ -3,6 +3,8 @@ package com.chatclient.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.Socket;
 
@@ -41,7 +43,14 @@ public class FriendChat1 extends JFrame implements ActionListener{
 		
 		jp =new JPanel();
 		jtf =new JTextField(15);
-		jtf.setForeground(Color.red);
+		jtf.setForeground(Color.blue);
+		jtf.addKeyListener(new KeyAdapter(){
+			public void keyPressed(KeyEvent event){
+				if(event.getKeyText(event.getKeyCode()).compareToIgnoreCase("Enter")==0){
+					jb.doClick();
+				}
+			}
+		});
 		jb=new JButton("发送");
 		jb.addActionListener(this);
 		jp.add(jtf);
@@ -62,7 +71,7 @@ public class FriendChat1 extends JFrame implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource()==jb) jta.append(jtf.getText()+"\r\n");
+		if(arg0.getSource()==jb) jta.append("			"+jtf.getText()+"\r\n");
 		
 		
 		//向服务器发送聊天信息
@@ -97,7 +106,7 @@ public class FriendChat1 extends JFrame implements ActionListener{
 		
 	}	*/
 	public void appendJta(String showMessage) {
-		jta.append("                                         "+showMessage+"\r\n");
+		jta.append(showMessage+"\r\n");
 	}
 
 }

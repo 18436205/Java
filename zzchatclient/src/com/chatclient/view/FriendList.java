@@ -59,9 +59,12 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 		for(int i=1;i<FRIENDCOUNT;i++)
 		{
 			myFriendJLabel[i]=new JLabel(i+"",new ImageIcon("images/fuhua.gif"),JLabel.LEFT);//"1"
+			myFriendJLabel[i].setEnabled(false);
+			
 			myFriendJLabel[i].addMouseListener(this);
 			myFriendListJPanel.add(myFriendJLabel[i]);
 		}
+		myFriendJLabel[Integer.parseInt(userName)].setEnabled(true);
 		myFriendScrollPane=new JScrollPane(myFriendListJPanel);
 		myFriendPanel.add(myFriendScrollPane);
 		
@@ -180,8 +183,15 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 			String receiver =jlbl.getText();
 			//new FriendChatClient(this.userName,receiver);
 			//new Thread(new FriendChat(this.userName,receiver)).start();
-			FriendChat1 friendChat1=new FriendChat1(this.userName,receiver);//friendChat是一个变量
+			
+			FriendChat1 friendChat1=(FriendChat1)hmFriendChat1.get(userName+"to"+receiver);
+			if(friendChat1==null){
+			friendChat1=new FriendChat1(this.userName,receiver);//friendChat是一个变量
 			hmFriendChat1.put(userName+"to"+receiver,friendChat1);//保存对象到HashMap中
+			}else{
+				friendChat1.setVisible(true);
+			}
+			
 		}
 		
 		

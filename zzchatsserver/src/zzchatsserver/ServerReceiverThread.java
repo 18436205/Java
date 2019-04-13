@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Iterator;
+import java.util.Set;
 
 import com.zzchat.model.Message;
 
@@ -23,9 +25,27 @@ public class ServerReceiverThread extends Thread{
 			mess=(Message)ois.readObject();
 			System.out.println(mess.getSender()+"对"+mess.getReceiver()+"说:"+mess.getContent());
 		
+		if(mess.getMessageType().equals(Message.message_Common)){
 			Socket s1=(Socket)StartServer.hmSocket.get(mess.getReceiver());
 			oos =new ObjectOutputStream(s1.getOutputStream());
 			oos.writeObject(mess);
+		}	
+		//第二步
+		if(mess.getMessageType().equals(Message.message_RequestOnlineFriend)){
+			Set friendSet=StartServer.hmSocket.keySet();
+			Iterator it=friendSet.iterator();
+			String friendName;
+			String friendString=" ";
+			while(it.hasNext()){
+				friendName=(String)it.next();
+				if(!friendName.equals(mess.getSender()))
+					friendString=friendString+friendName+" ";
+			}
+			System.out.println("全部好友的名字"+friendString);
+		
+			}
+		
+		
 	}catch(IOException | ClassNotFoundException e){
 		e.printStackTrace();
 	}
