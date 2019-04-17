@@ -28,6 +28,7 @@ public class ClientReceiverThread extends Thread{
 				if(mess.getMessageType().equals(Message.message_Common)){
 				
 				FriendChat1 friendChat1=(FriendChat1)FriendList.hmFriendChat1.get(mess.getReceiver()+"to"+mess.getSender());
+				
 				friendChat1.appendJta(showMessage);
 				}
 			
@@ -44,7 +45,7 @@ public class ClientReceiverThread extends Thread{
 			}
 		}
 	}
-
+}
 
 	public static void main(String[] args) {
 		
