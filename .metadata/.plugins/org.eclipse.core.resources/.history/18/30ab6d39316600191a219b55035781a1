@@ -41,7 +41,7 @@ public class ServerReceiverThread extends Thread{
 			while(it.hasNext()){//判断有没有下一个元素
 				friendName=(String)it.next();//取出下一个元素
 				if(!friendName.equals(mess.getSender()))
-					friendString=friendName+" "+friendString+" ";
+					friendString=friendName+" "+friendString;
 			}
 			System.out.println("全部好友的名字"+friendString);
 			

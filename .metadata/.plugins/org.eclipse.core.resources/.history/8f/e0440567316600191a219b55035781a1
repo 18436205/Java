@@ -140,7 +140,7 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 		this.add(myStrangerPanel,"2");
 		this.add(BlackList,"3");
 		
-		this.setSize(280,750);
+		this.setSize(150,500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -154,8 +154,9 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	public void setEnableFriendIcon(String frienString) {
 		String[] friendName=frienString.split(" ");
 		int count=friendName.length;
-		for(int i=0;i<count;++i)
+		for(int i=1;i<count;++i)
 		{
+			
 			myFriendJLabel[Integer.parseInt(friendName[i])].setEnabled(true);
 		}
 		

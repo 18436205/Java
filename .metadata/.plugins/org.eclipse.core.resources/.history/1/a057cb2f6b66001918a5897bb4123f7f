@@ -140,7 +140,7 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 		this.add(myStrangerPanel,"2");
 		this.add(BlackList,"3");
 		
-		this.setSize(280,750);
+		this.setSize(300,1000);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

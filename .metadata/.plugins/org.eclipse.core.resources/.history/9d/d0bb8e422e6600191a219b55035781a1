@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import com.zzchat.model.Message;
@@ -36,11 +35,6 @@ public class StartServer {
 		System.out.println(user.getUserName());
 		System.out.println(user.getPassWord());
 		
-		//数据库
-		
-		
-		
-		
 		//密码验证功能
 		mess=new Message();
 		mess.setSender("Seerver");
@@ -54,24 +48,15 @@ public class StartServer {
 			mess.setMessageType("Message.message_LoginFailure");//0为验证不通过
 			
 		}
-		sendMessage(s,mess);
+		ObjectOutputStream oos=new ObjectOutputStream(s.getOutputStream());
+		oos.writeObject(mess);
 		if(user.getPassWord().equals("123456")){
 			//     第一步 
 			 mess.setMessageType(Message.message_NewOnlineFriend);
 			 mess.setSender("Server");
 			 mess.setContent(userName);
 			 
-			 Set onlineFriendSet=hmSocket.keySet();
-			 Iterator it=onlineFriendSet.iterator();
-			 String friendName;
-			 while(it.hasNext()){
-				 friendName=(String)it.next();
-				 mess.setReceiver(friendName);
-				 
-				 Socket s1=(Socket)hmSocket.get(friendName);
-				 sendMessage(s1,mess);
-			 }
-			 
+			 Set onlineFriendSet-hmSocket.keySet();
 			
 			
 			hmSocket.put(userName,s);
@@ -84,11 +69,6 @@ public class StartServer {
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void sendMessage(Socket s,Message mess) throws IOException {
-		ObjectOutputStream oos=new ObjectOutputStream(s.getOutputStream());
-		oos.writeObject(mess);
 	}
 
 	public static void main(String[] args) {
