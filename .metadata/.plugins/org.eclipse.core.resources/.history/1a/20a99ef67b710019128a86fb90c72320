@@ -69,6 +69,7 @@ public class StartServer {
 		boolean loginSuccess=rs.next();	
 
 		
+		
 		//密码验证功能
 		mess=new Message();
 		mess.setSender("Seerver");

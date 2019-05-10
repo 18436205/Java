@@ -69,6 +69,7 @@ public class StartServer {
 		boolean loginSuccess=rs.next();	
 
 		
+		
 		//密码验证功能
 		mess=new Message();
 		mess.setSender("Seerver");
@@ -76,16 +77,6 @@ public class StartServer {
 		if(user.getPassWord().equals("123456")){
 			//告诉客户端密码验证通过,可以创建Message类
 		mess.setMessageType("Message.message_LoginSuccess");//1为验证通过
-		
-		String friend_Relation_Sql="select * from relation where majoruser=? and slaveuser=1";
-		ptmt=conn.prepareStatement(friend_Relation_Sql);
-		ptmt.setString(1, userName);
-		rs=ptmt.executeQuery();
-		String friendString="";
-		while(rs.next()){
-			friendString=friendString+rs.getString("slaveuser")+" ";
-		}mess.setContent(friendString);
-		System.out.println(userName+" 的relation数据表中的好友："+friendString);
 		
 		}else{	
 			

@@ -47,7 +47,7 @@ public class ClientLogin extends JFrame implements ActionListener{
 		//创建中部组建
 		jp2=new JPanel(new GridLayout(3,3));//布局的问题
 		
-		jlbl2=new JLabel("id或用户名",JLabel.CENTER);jlbl3=new JLabel("zz密码",JLabel.CENTER);
+		jlbl2=new JLabel("zz号码",JLabel.CENTER);jlbl3=new JLabel("zz密码",JLabel.CENTER);
 		jlbl4=new JLabel("忘记密码",JLabel.CENTER);
 		jlbl4.setForeground(Color.blue);
 		jlbl5=new JLabel("申请密码保护",JLabel.CENTER);
