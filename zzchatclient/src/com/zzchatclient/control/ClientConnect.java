@@ -23,7 +23,7 @@ public class ClientConnect {
 		}
 	}
 
-	public boolean loginValidate(User user){
+	public Message loginValidateFeomDB(User user){
 		boolean loginSuccess=false;
 		ObjectOutputStream oos;
 		ObjectInputStream ois;
@@ -48,7 +48,7 @@ public class ClientConnect {
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		return loginSuccess;
+		return mess;
 		
 	}
 }

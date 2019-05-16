@@ -128,11 +128,14 @@ public class ClientLogin extends JFrame implements ActionListener{
 			user.setUserName(userName);
 			user.setPassWord(password);
 			
-			boolean loginSuccess=new ClientConnect().loginValidate(user);
-			if(loginSuccess){
-				
-			FriendList friendList =new FriendList(userName);
-			hmFriendlist.put(userName,friendList );
+			//boolean loginSuccess=new ClientConnect().loginValidate(user);
+			Message mess1=new ClientConnect().loginValidateFeomDB(user);
+			if(mess1.getMessageType().equals("Message.message_LoginSuccess")){
+			String friendString=mess1.getContent();
+			System.out.println("全部好友"+friendString);
+			
+			FriendList friendList =new FriendList(userName,friendString);
+			hmFriendlist.put(userName,friendString );
 			//第一步
 			Message mess=new Message();
 			mess.setSender(userName);

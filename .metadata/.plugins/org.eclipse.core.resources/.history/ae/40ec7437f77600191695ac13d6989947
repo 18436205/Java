@@ -1,0 +1,9 @@
+package zzchatsserver;
+
+public class ZzchatDbUtil {
+
+	public ZzchatDbUtil() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

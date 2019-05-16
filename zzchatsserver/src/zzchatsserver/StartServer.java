@@ -40,52 +40,25 @@ public class StartServer {
 		passWord=user.getPassWord();
 		System.out.println(user.getUserName());
 		System.out.println(user.getPassWord());
-		
-		//数据库
-		
 
-		//使用数据库进行用户身份认证
-		//1、加载驱动程序
-		Class.forName("com.mysql.jdbc.Driver");
-		System.out.println("已经加载了数据库驱动！");
-		//2、连接数据库
-		//String url="jdbc:mysql://127.0.0.1:3306/zzchat";
-		//中文用户名必须用下面的url
-		String url="jdbc:mysql://127.0.0.1:3306/zzchat?useUnicode=true&characterEncoding=UTF-8";
-		String dbUser="root";
-		String dbPass="";				
-		Connection conn=DriverManager.getConnection(url,dbUser,dbPass);
 		
-		//3、创建PreparedStatement对象，用来执行SQL语句
-		String user_Login_Sql="select * from user where username=? and password=?";
-		PreparedStatement ptmt=conn.prepareStatement(user_Login_Sql);
-		ptmt.setString(1, userName);
-		ptmt.setString(2, passWord);
 		
-		//4、执行查询，返回结果集
-		ResultSet rs=ptmt.executeQuery();
-		
-		//5、根据结果集来判断是否能登录
-		boolean loginSuccess=rs.next();	
 
 		
 		//密码验证功能
 		mess=new Message();
 		mess.setSender("Seerver");
 		mess.setReceiver(userName);
-		if(user.getPassWord().equals("123456")){
+		
+		boolean loginSuccess=ZzchatDbUtil.loginValidate(userName, passWord);
+		if(loginSuccess){
 			//告诉客户端密码验证通过,可以创建Message类
+			
 		mess.setMessageType("Message.message_LoginSuccess");//1为验证通过
 		
-		String friend_Relation_Sql="select * from relation where majoruser=? and slaveuser=1";
-		ptmt=conn.prepareStatement(friend_Relation_Sql);
-		ptmt.setString(1, userName);
-		rs=ptmt.executeQuery();
-		String friendString="";
-		while(rs.next()){
-			friendString=friendString+rs.getString("slaveuser")+" ";
-		}mess.setContent(friendString);
-		System.out.println(userName+" 的relation数据表中的好友："+friendString);
+
+		String friendString=ZzchatDbUtil.getFriendString(userName);
+		mess.setContent(friendString);
 		
 		}else{	
 			
@@ -93,11 +66,12 @@ public class StartServer {
 			
 		}
 		sendMessage(s,mess);
-		if(user.getPassWord().equals("123456")){
+		if(loginSuccess){
 			//     第一步 
 			 mess.setMessageType(Message.message_NewOnlineFriend);
 			 mess.setSender("Server");
 			 mess.setContent(userName);
+			 
 			 
 			 Set onlineFriendSet=hmSocket.keySet();
 			 Iterator it=onlineFriendSet.iterator();
@@ -120,9 +94,6 @@ public class StartServer {
 			}
 		
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
