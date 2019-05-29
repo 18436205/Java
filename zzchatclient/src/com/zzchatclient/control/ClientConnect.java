@@ -22,7 +22,35 @@ public class ClientConnect {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean registerUserIntoDB(User user) {
+		boolean registerSuccess=false;
+		ObjectOutputStream oos;
+		ObjectInputStream ois;
+		Message mess= null;
+		try {
+			oos =new ObjectOutputStream(s.getOutputStream());
+			oos.writeObject(user);
+		
+			//接收验证通过的mess
+			 ois=new ObjectInputStream(s.getInputStream());
+			mess=(Message)ois.readObject();
+			
+			if(mess.getMessageType().equals(Message.message_RegisterSuccess)){
+				registerSuccess=true;
+				s.close();
+			}
+			
+		} catch (IOException|ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return registerSuccess;
+		
+	}
 
+	
+	
+	
 	public Message loginValidateFeomDB(User user){
 		boolean loginSuccess=false;
 		ObjectOutputStream oos;

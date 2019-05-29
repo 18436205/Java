@@ -25,12 +25,12 @@ public class ServerReceiverThread extends Thread{
 		try {
 			ois =new ObjectInputStream(s.getInputStream());
 			mess=(Message)ois.readObject();
-			sender=mess.getSender( );;
+			sender=mess.getSender( );
 			System.out.println(mess.getSender()+"对"+mess.getReceiver()+"说:"+mess.getContent());
 		
 		if(mess.getMessageType().equals(Message.message_Common)){
 			Socket s1=(Socket)StartServer.hmSocket.get(mess.getReceiver());
-			sendMessage(s1, mess);
+			sendMessage(s1,mess);
 		}	
 		//第二步
 		if(mess.getMessageType().equals(Message.message_RequestOnlineFriend)){

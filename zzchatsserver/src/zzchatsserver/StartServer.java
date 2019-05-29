@@ -41,57 +41,121 @@ public class StartServer {
 		System.out.println(user.getUserName());
 		System.out.println(user.getPassWord());
 
+		if(user.getUserMessageType().equals("USER_REGISTER")){
+			boolean seeKUserResult=ZzchatDbUtil.seeKUser(userName);
+			mess=new Message();
+			mess.setSender("Seerver");
+			mess.setReceiver(userName);
+			if(seeKUserResult){
+				//返回客户端注册失败
+				mess.setMessageType(Message.message_RegisterFailure);
+			}else{
+				//将新用户名插入user表，返回客户端注册成功
+				ZzchatDbUtil.addUser(userName,passWord);
+				mess.setMessageType(Message.message_RegisterSuccess);
+			}
+			sendMessage(s, mess);
+			s.close();
+		}
 		
+		if(user.getUserMessageType().equals("USER_LOGIN")){
+			boolean loginSuccess=ZzchatDbUtil.loginValidate(userName, passWord);
+			mess=new Message();
+			mess.setSender("Seerver");
+			mess.setReceiver(userName);
+			
+			
+			if(loginSuccess){
+				//告诉客户端密码验证通过,可以创建Message类
+				
+			mess.setMessageType("Message.message_LoginSuccess");//1为验证通过
+			
+
+			String friendString=ZzchatDbUtil.getFriendString(userName);
+			mess.setContent(friendString);
+			
+			}else{	
+				
+				mess.setMessageType("Message.message_LoginFailure");//0为验证不通过
+				
+			}
+			sendMessage(s,mess);
+			if(loginSuccess){
+				//     第一步 
+				 mess.setMessageType(Message.message_NewOnlineFriend);
+				 mess.setSender("Server");
+				 mess.setContent(userName);
+				 
+				 
+				 Set onlineFriendSet=hmSocket.keySet();
+				 Iterator it=onlineFriendSet.iterator();
+				 String friendName;
+				 while(it.hasNext()){
+					 friendName=(String)it.next();
+					 mess.setReceiver(friendName);
+					 
+					 Socket s1=(Socket)hmSocket.get(friendName);
+					 sendMessage(s1,mess);
+				 }
+				 
+				
+				
+				hmSocket.put(userName,s);
+				new ServerReceiverThread(s).start();
+				
+				}
 		
+				}
+		}
 
 		
 		//密码验证功能
-		mess=new Message();
-		mess.setSender("Seerver");
-		mess.setReceiver(userName);
-		
-		boolean loginSuccess=ZzchatDbUtil.loginValidate(userName, passWord);
-		if(loginSuccess){
-			//告诉客户端密码验证通过,可以创建Message类
-			
-		mess.setMessageType("Message.message_LoginSuccess");//1为验证通过
-		
-
-		String friendString=ZzchatDbUtil.getFriendString(userName);
-		mess.setContent(friendString);
-		
-		}else{	
-			
-			mess.setMessageType("Message.message_LoginFailure");//0为验证不通过
-			
-		}
-		sendMessage(s,mess);
-		if(loginSuccess){
-			//     第一步 
-			 mess.setMessageType(Message.message_NewOnlineFriend);
-			 mess.setSender("Server");
-			 mess.setContent(userName);
-			 
-			 
-			 Set onlineFriendSet=hmSocket.keySet();
-			 Iterator it=onlineFriendSet.iterator();
-			 String friendName;
-			 while(it.hasNext()){
-				 friendName=(String)it.next();
-				 mess.setReceiver(friendName);
-				 
-				 Socket s1=(Socket)hmSocket.get(friendName);
-				 sendMessage(s1,mess);
-			 }
-			 
-			
-			
-			hmSocket.put(userName,s);
-			new ServerReceiverThread(s).start();
-			
-			}
-	
-			}
+//		mess=new Message();
+//		mess.setSender("Seerver");
+//		mess.setReceiver(userName);
+//		
+//		boolean loginSuccess=ZzchatDbUtil.loginValidate(userName, passWord);
+//		if(loginSuccess){
+//			//告诉客户端密码验证通过,可以创建Message类
+//			
+//		mess.setMessageType("Message.message_LoginSuccess");//1为验证通过
+//		
+//
+//		String friendString=ZzchatDbUtil.getFriendString(userName);
+//		mess.setContent(friendString);
+//		
+//		}else{	
+//			
+//			mess.setMessageType("Message.message_LoginFailure");//0为验证不通过
+//			
+//		}
+//		sendMessage(s,mess);
+//		if(loginSuccess){
+//			//     第一步 
+//			 mess.setMessageType(Message.message_NewOnlineFriend);
+//			 mess.setSender("Server");
+//			 mess.setContent(userName);
+//			 
+//			 
+//			 Set onlineFriendSet=hmSocket.keySet();
+//			 Iterator it=onlineFriendSet.iterator();
+//			 String friendName;
+//			 while(it.hasNext()){
+//				 friendName=(String)it.next();
+//				 mess.setReceiver(friendName);
+//				 
+//				 Socket s1=(Socket)hmSocket.get(friendName);
+//				 sendMessage(s1,mess);
+//			 }
+//			 
+//			
+//			
+//			hmSocket.put(userName,s);
+//			new ServerReceiverThread(s).start();
+//			
+//			}
+//	
+//			}
 		
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();

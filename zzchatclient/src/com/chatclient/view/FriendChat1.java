@@ -1,6 +1,7 @@
 package com.chatclient.view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -71,7 +72,9 @@ public class FriendChat1 extends JFrame implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource()==jb) jta.append("			"+jtf.getText()+"\r\n");
+		if(arg0.getSource()==jb) {
+			jta.append(jtf.getText()+"\r\n");
+		}
 		
 		
 		//向服务器发送聊天信息
