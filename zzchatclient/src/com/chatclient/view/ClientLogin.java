@@ -154,7 +154,7 @@ public class ClientLogin extends JFrame implements ActionListener{
 			System.out.println("全部好友"+friendString);
 			
 			FriendList friendList =new FriendList(userName,friendString);
-			hmFriendlist.put(userName,friendString );
+			hmFriendlist.put(userName,friendList);
 			//第一步
 			Message mess1=new Message();
 			mess1.setSender(userName);

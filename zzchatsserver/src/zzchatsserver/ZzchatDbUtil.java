@@ -58,7 +58,7 @@ public class ZzchatDbUtil {
 	
 	
 	public static void addUser(String userName, String passWord){
-Connection conn=getConnection();
+		Connection conn=getConnection();
 		
 		String user_add_Sql="insert into user(username,password,registertimestamp) values(?,?,?)";
 		PreparedStatement ptmt=null;
@@ -156,6 +156,56 @@ Connection conn=getConnection();
 			}
 		}
 		
+	}
+
+
+	public static boolean seekRelation(String majoruser, String slaveuser,String relationtype) {
+		boolean seekResult=false;
+		Connection conn=getConnection();
+		String addfriend_Relation_Sql="select * from relation where majoruser=? and slaveuser=? and relationtype=?";
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		try {
+			ptmt=conn.prepareStatement(addfriend_Relation_Sql);
+			ptmt.setString(1, majoruser);
+			ptmt.setString(2,slaveuser);
+			ptmt.setString(3, relationtype);
+			rs=ptmt.executeQuery();
+			
+			seekResult=rs.next();
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}finally{
+			closeDB(conn, ptmt, rs);
+		}
+		return seekResult;
+	}
+
+
+	public static int addRelation(String majoruser, String slaveuser,String relationtype) {
+		int count=0;
+		Connection conn=getConnection();
+		
+		String relation_add_Sql="insert into relation(majoruser,slaveuser,relationtype) values(?,?,?)";
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		try {
+			ptmt = conn.prepareStatement(relation_add_Sql);
+			ptmt.setString(1, majoruser);
+			ptmt.setString(2, slaveuser);
+			ptmt.setString(3, relationtype);
+			//4、执行查询，返回结果集
+			count=ptmt.executeUpdate();
+				
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			closeDB(conn, ptmt, rs);
+		}
+		
+		return count;
 	}
 
 	}

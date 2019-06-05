@@ -5,10 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
 import javax.swing.*;
+
+import com.zzchat.model.Message;
+import com.zzchatclient.control.ClientConnect;
 
 public class FriendList extends JFrame implements ActionListener,MouseListener{//顶层容器
 	
@@ -31,6 +36,9 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	JButton myStrangerJButton;
 	JButton blackListJButton;
 	
+	JButton addFriendJButton;
+	JPanel addFriendJPanel;
+	
 	JPanel myStrangerPanel;
 	
 	JPanel myFriendStrangerPanel;
@@ -52,23 +60,20 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 		this.setTitle(userName);
 		//第一张卡片
 		myFriendPanel=new JPanel(new BorderLayout());//边界布局
-		myFriendJButton=new JButton("我的好友");
-		myFriendPanel.add(myFriendJButton,"North");
-		//中部
-		String[] friendName=friendString.split(" ");
-		int count=friendName.length;
-		
-		myFriendListJPanel=new JPanel(new GridLayout(count,1));
-		for(int i=0;i<count;i++)
-		{
-			myFriendJLabel[i]=new JLabel(friendName[i],new ImageIcon("images/fuhua.gif"),JLabel.LEFT);//"1"
-			//myFriendJLabel[i].setEnabled(false);
-			
-			myFriendJLabel[i].addMouseListener(this);
-			myFriendListJPanel.add(myFriendJLabel[i]);
-		}
-		
 	
+		myFriendJButton=new JButton("我的好友");
+		
+		
+		addFriendJButton=new JButton("添加好友");
+		addFriendJButton.addActionListener(this);
+		addFriendJPanel=new JPanel(new GridLayout(2,1));//网格布局
+		addFriendJPanel.add(addFriendJButton);
+		addFriendJPanel.add(myFriendJButton);
+		myFriendPanel.add(addFriendJPanel,"North");
+		
+		//中部
+		myFriendListJPanel=new JPanel();
+		updateFriendIcon(friendString);
 		
 		
 		//myFriendJLabel[Integer.parseInt(userName)].setEnabled(true);
@@ -152,6 +157,23 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
+
+
+	public void updateFriendIcon(String friendString) {
+		myFriendListJPanel.removeAll();//移除全部好友图标
+		String[] friendName=friendString.split(" ");
+		int count=friendName.length;
+		
+		myFriendListJPanel.setLayout(new GridLayout(count, 1));
+		for(int i=0;i<count;i++)
+		{
+			myFriendJLabel[i]=new JLabel(friendName[i],new ImageIcon("images/fuhua.gif"),JLabel.LEFT);//"1"
+			//myFriendJLabel[i].setEnabled(false);
+			
+			myFriendJLabel[i].addMouseListener(this);
+			myFriendListJPanel.add(myFriendJLabel[i]);
+		}
+	}
 	
 	
 	public static void main(String[] args){
@@ -170,6 +192,26 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	
 	@Override
 	public void actionPerformed(ActionEvent argo){
+		if(argo.getSource()==addFriendJButton){
+			String addFriendName=JOptionPane.showInputDialog(null,"请输入好友名字","添加好友",JOptionPane.DEFAULT_OPTION);
+			Message mess=new Message();
+			mess.setSender(userName);
+			mess.setReceiver("Server");
+			mess.setContent(addFriendName);
+			mess.setMessageType(Message.message_AddFriend);
+			
+			Socket s=(Socket)ClientConnect.hmSocket.get(userName);
+			ObjectOutputStream oos;
+			try {
+				oos = new ObjectOutputStream(s.getOutputStream());
+				oos.writeObject(mess);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
 		if(argo.getSource()==myStrangerJButton){
 			cardLayout.show(this.getContentPane(), "2");
 		}
