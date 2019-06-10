@@ -15,5 +15,8 @@ public interface MessageType {
 	String message_AddFriendFailure_NoUser="9";
 	String message_AddFriendFailure_AlreadFriend="10";
 	String message_AddFriendSuccess="11";
-	
+	String message_ClearFriend="12";
+	String message_ClearFriendSuccess="13";
+	String message_ClearFriendFailuer="14";
+	String message_ClearFriendFailure_NoUser="15";
 }

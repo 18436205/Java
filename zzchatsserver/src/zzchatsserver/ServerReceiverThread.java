@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.zzchat.model.Message;
+import com.zzchat.model.MessageType;
 
 public class ServerReceiverThread extends Thread{
 	Socket s;
@@ -28,6 +29,26 @@ public class ServerReceiverThread extends Thread{
 			sender=mess.getSender( );
 			System.out.println(mess.getSender()+"对"+mess.getReceiver()+"说:"+mess.getContent());
 		
+			
+			if(mess.getMessageType().equals(Message.message_ClearFriend)){
+				String clearFriendName=mess.getContent();
+				System.out.print("用户名："+sender + "需要删除的好友的名字："+clearFriendName);
+				if(!ZzchatDbUtil.seeKUser(clearFriendName)){
+					mess.setMessageType(Message.message_ClearFriendFailure_NoUser);
+				}else{
+					String relationType="1";//1表示好友
+					if(ZzchatDbUtil.seekRelation(sender,clearFriendName,relationType)){
+						int  count=ZzchatDbUtil.clearRelation(sender,clearFriendName,relationType);	
+						if(count!=0){
+							mess.setMessageType(Message.message_ClearFriendSuccess);
+							//拿到全部好友
+							String allFriedName=ZzchatDbUtil.getFriendString(sender);
+							mess.setContent(allFriedName);
+						}
+					}
+				}sendMessage(s, mess);
+			}
+			
 			if(mess.getMessageType().equals(Message.message_AddFriend)){
 				String addFriendName=mess.getContent();
 				System.out.print("需要添加新好友的名字"+addFriendName);

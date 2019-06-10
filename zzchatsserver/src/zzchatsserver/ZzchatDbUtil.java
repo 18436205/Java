@@ -208,5 +208,31 @@ public class ZzchatDbUtil {
 		return count;
 	}
 
+
+	public static  int clearRelation(String majoruser, String slaveuser,String relationType) {
+		int count=0;
+		Connection conn=getConnection();
+		
+		String relation_add_Sql="delete from relation where majoruser=? and slaveuser=? and relationtype=?";
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		try {
+			ptmt = conn.prepareStatement(relation_add_Sql);
+			ptmt.setString(1, majoruser);
+			ptmt.setString(2, slaveuser);
+			ptmt.setString(3, relationType);
+			//4、执行查询，返回结果集
+			count=ptmt.executeUpdate();
+				
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			closeDB(conn, ptmt, rs);
+		}
+		
+		return count;
+	}
+
 	}
 	

@@ -1,0 +1,9 @@
+package com.chatclient.view;
+
+public class MenuActionListener {
+
+	public MenuActionListener() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

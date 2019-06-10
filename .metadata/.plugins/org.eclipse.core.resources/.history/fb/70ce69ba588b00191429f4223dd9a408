@@ -1,0 +1,38 @@
+package com.chatclient.view;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
+import javax.swing.JOptionPane;
+
+import com.zzchat.model.Message;
+import com.zzchat.model.User;
+import com.zzchatclient.control.ClientConnect;
+
+
+
+public class MenuActionListener implements ActionListener {
+	String userName="";
+	public void actionPerformed(ActionEvent arg0) {
+		Message mess=new Message();
+		mess.setSender(userName);
+		mess.setReceiver("Server");
+		//mess.setContent(addFriendName);
+		mess.setMessageType(Message.message_ClearFriend);
+		
+		Socket s=(Socket)ClientConnect.hmSocket.get(userName);
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(s.getOutputStream());
+			oos.writeObject(mess);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.print("ÒÑÉ¾³ýºÃÓÑ");
+		
+	}	
+}

@@ -3,6 +3,7 @@ package com.chatclient.view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -37,7 +38,8 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	JButton blackListJButton;
 	
 	JButton addFriendJButton;
-	JPanel addFriendJPanel;
+	JButton clearFriendJButton;
+	JPanel FriendAndMenuPanel;
 	
 	JPanel myStrangerPanel;
 	
@@ -55,25 +57,35 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	JButton black;
 	String userName;
 	
+	JPanel FunctionMenuPanel;
+	JPanel  menuPanel;
+	JButton functionMenuButton;
+	JButton myFriendJButton4;
+	JButton myStrangerJButton4;
+	JButton blackJButton4;
+	
 	public FriendList(String userName,String friendString){
 		this.userName=userName;
 		this.setTitle(userName);
 		//第一张卡片
 		myFriendPanel=new JPanel(new BorderLayout());//边界布局
-	
+		
+		functionMenuButton=new JButton("功能菜单");
 		myFriendJButton=new JButton("我的好友");
+		functionMenuButton.addActionListener(this);
 		
 		
-		addFriendJButton=new JButton("添加好友");
-		addFriendJButton.addActionListener(this);
-		addFriendJPanel=new JPanel(new GridLayout(2,1));//网格布局
-		addFriendJPanel.add(addFriendJButton);
-		addFriendJPanel.add(myFriendJButton);
-		myFriendPanel.add(addFriendJPanel,"North");
+		FriendAndMenuPanel=new JPanel(new GridLayout(2,1));//网格布局
+	
+		FriendAndMenuPanel.add(functionMenuButton);
+		FriendAndMenuPanel.add(myFriendJButton);
+		
+		
+		myFriendPanel.add(FriendAndMenuPanel,"North");
 		
 		//中部
 		myFriendListJPanel=new JPanel();
-		updateFriendIcon(friendString);
+		updateFriendIcon(friendString,userName);
 		
 		
 		//myFriendJLabel[Integer.parseInt(userName)].setEnabled(true);
@@ -143,14 +155,35 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 		}
 		BlackListScrollpane=new JScrollPane(blacklist);
 		BlackList.add(BlackListScrollpane);
+		//功能菜单
+		FunctionMenuPanel=new JPanel(new BorderLayout());//边界布局
+
 		
+		myFriendJButton4=new JButton("我的好友");
+		myFriendJButton4.addActionListener(this);
+		myStrangerJButton4=new JButton("陌生人");
+		myStrangerJButton4.addActionListener(this);
+		blackJButton4=new JButton("黑名单");
+		blackJButton4.addActionListener(this);
+		addFriendJButton=new JButton("添加好友");
+		addFriendJButton.addActionListener(this);
+		clearFriendJButton=new JButton("删除好友");
+		clearFriendJButton.addActionListener(this);
+		menuPanel=new JPanel(new GridLayout(5,1));
+		menuPanel.add(addFriendJButton);
+		menuPanel.add(clearFriendJButton);
+		menuPanel.add(myFriendJButton4);
+		menuPanel.add(myStrangerJButton4);
+		menuPanel.add(blackJButton4);
 		
+		FunctionMenuPanel.add(menuPanel,"North");
 		
 		cardLayout=new CardLayout();
 		this.setLayout(cardLayout);
 		this.add(myFriendPanel,"1");
 		this.add(myStrangerPanel,"2");
 		this.add(BlackList,"3");
+		this.add(FunctionMenuPanel,"4");
 		
 		this.setSize(280,750);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -159,7 +192,15 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	}
 
 
-	public void updateFriendIcon(String friendString) {
+	public void updateFriendIcon(String friendString,String userName) {
+		/*JPopupMenu popupMenu = new JPopupMenu();
+		JMenuItem seekFriend = new JMenuItem("images/timg.jpg");
+		seekFriend .addActionListener(new MenuActionListener());
+		
+		// 弹出菜单菜单项的添加
+		popupMenu.add(seekFriend);
+		*/
+		
 		myFriendListJPanel.removeAll();//移除全部好友图标
 		String[] friendName=friendString.split(" ");
 		int count=friendName.length;
@@ -169,7 +210,20 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 		{
 			myFriendJLabel[i]=new JLabel(friendName[i],new ImageIcon("images/fuhua.gif"),JLabel.LEFT);//"1"
 			//myFriendJLabel[i].setEnabled(false);
+			// 将弹出菜单添加到多行文本框
+			/*myFriendJLabel[i].add(popupMenu);//showText为弹出右键菜单的组件的对象
+			myFriendJLabel[i].addMouseListener(new MouseAdapter(){
+			public void mousePressed(MouseEvent e) {
+			if (e.isPopupTrigger())
+			popupMenu.show(e.getComponent(), e.getX(), e.getY());
 			
+			}
+			public void mouseReleased(MouseEvent e) {
+			if (e.isPopupTrigger())
+			popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+			}
+			);*/
 			myFriendJLabel[i].addMouseListener(this);
 			myFriendListJPanel.add(myFriendJLabel[i]);
 		}
@@ -183,7 +237,7 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	public void setEnableFriendIcon(String friendString) {
 		String[] friendName=friendString.split(" ");
 		int count=friendName.length;
-		for(int i=0;i<count;++i)
+		for(int i=1;i<count;++i)
 		{
 			myFriendJLabel[Integer.parseInt(friendName[i])].setEnabled(true);
 		}
@@ -192,6 +246,27 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 	
 	@Override
 	public void actionPerformed(ActionEvent argo){
+		if(argo.getSource()==clearFriendJButton){
+			String clearFriendName=JOptionPane.showInputDialog(null,"请输入好友名字","删除好友",JOptionPane.DEFAULT_OPTION);
+			Message mess=new Message();
+			mess.setSender(userName);
+			mess.setReceiver("Server");
+			mess.setContent(clearFriendName);
+			mess.setMessageType(Message.message_ClearFriend);
+			
+			Socket s=(Socket)ClientConnect.hmSocket.get(userName);
+			ObjectOutputStream oos;
+			try {
+				oos = new ObjectOutputStream(s.getOutputStream());
+				oos.writeObject(mess);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}cardLayout.show(this.getContentPane(), "1");
+		}
+		
+		
+		
 		if(argo.getSource()==addFriendJButton){
 			String addFriendName=JOptionPane.showInputDialog(null,"请输入好友名字","添加好友",JOptionPane.DEFAULT_OPTION);
 			Message mess=new Message();
@@ -209,9 +284,21 @@ public class FriendList extends JFrame implements ActionListener,MouseListener{/
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			cardLayout.show(this.getContentPane(), "1");
 		}
 		
-		
+		if(argo.getSource()==functionMenuButton){
+			cardLayout.show(this.getContentPane(), "4");
+		}
+		if(argo.getSource()==myStrangerJButton4){
+			cardLayout.show(this.getContentPane(), "2");
+		}
+		if(argo.getSource()==myFriendJButton4){
+			cardLayout.show(this.getContentPane(), "1");
+		}
+		if(argo.getSource()==blackJButton4){
+			cardLayout.show(this.getContentPane(), "3");
+		}
 		if(argo.getSource()==myStrangerJButton){
 			cardLayout.show(this.getContentPane(), "2");
 		}

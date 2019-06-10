@@ -28,6 +28,23 @@ public class ClientReceiverThread extends Thread{
 				System.out.println(showMessage);
 				//jta.append(showMessage+"\r\n");
 				
+				
+				if(mess.getMessageType().equals(Message.message_ClearFriendFailure_NoUser)){
+					JOptionPane.showMessageDialog(null,"删除失败！用户不存在！");
+				}
+				if(mess.getMessageType().equals(Message.message_ClearFriendFailuer)){
+					JOptionPane.showMessageDialog(null,"删除失败！该用户还不是您的好友！");
+				}
+				if(mess.getMessageType().equals(Message.message_ClearFriendSuccess)){
+					JOptionPane.showMessageDialog(null,"删除成功！");
+					String allFriendName=mess.getContent();
+					FriendList friendList=(FriendList)ClientLogin.hmFriendlist.get(mess.getSender());
+					friendList.updateFriendIcon(allFriendName,null);
+					friendList.revalidate();
+				}
+				
+				
+				
 				if(mess.getMessageType().equals(Message.message_AddFriendFailure_NoUser)){
 					JOptionPane.showMessageDialog(null,"添加失败！用户不存在！");
 				}
@@ -40,7 +57,7 @@ public class ClientReceiverThread extends Thread{
 					JOptionPane.showMessageDialog(null,"添加成功！");
 					String allFriendName=mess.getContent();
 					FriendList friendList=(FriendList)ClientLogin.hmFriendlist.get(mess.getSender());
-					friendList.updateFriendIcon(allFriendName);
+					friendList.updateFriendIcon(allFriendName,null);
 					friendList.revalidate();
 				}
 				
